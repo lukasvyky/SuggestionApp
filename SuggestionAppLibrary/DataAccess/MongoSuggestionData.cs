@@ -96,7 +96,7 @@ public class MongoSuggestionData : ISuggestionData
 
          _cache.Remove(CacheName);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
          await session.AbortTransactionAsync();
          throw;
