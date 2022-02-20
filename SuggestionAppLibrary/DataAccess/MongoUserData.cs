@@ -8,19 +8,19 @@ public class MongoUserData : IUserData
       _users = db.Users;
    }
 
-   public async Task<List<User>> GetUsersAsync()
+   public async Task<List<User>> GetUsers()
    {
       var result = await _users.FindAsync(_ => true);
       return result.ToList();
    }
 
-   public async Task<User> GetUserAsync(string id)
+   public async Task<User> GetUser(string id)
    {
       var result = await _users.FindAsync(id);
       return result.FirstOrDefault();
    }
 
-   public async Task<User> GetUserFromAuthenticationAsync(string objectId)
+   public async Task<User> GetUserFromAuthentication(string objectId)
    {
       var result = await _users.FindAsync(u => u.ObjectIdentifier.Equals(objectId));
       return result.FirstOrDefault();
