@@ -8,7 +8,7 @@ public class BasicUser
 
    public BasicUser()
    {
-      
+
    }
 
    public BasicUser(User user)

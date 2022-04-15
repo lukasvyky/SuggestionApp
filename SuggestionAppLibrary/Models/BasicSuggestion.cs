@@ -8,7 +8,7 @@ public class BasicSuggestion
 
    public BasicSuggestion()
    {
-      
+
    }
 
    public BasicSuggestion(Suggestion suggestion)
