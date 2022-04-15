@@ -1,0 +1,83 @@
+﻿@page "/SampleData"
+@inject ICategoryData categoryData
+@inject IStatusData statusData
+
+<h3>SampleData</h3>
+
+@code {
+    private async Task CreateCategories()
+    {
+        var categories = await categoryData.GetCategories();
+
+        if (categories?.Count > 0)
+        {
+            return;
+        }
+
+        Category category = new()
+            {
+                Name = "Courses",
+                Description = "Typical courses"
+            };
+        await categoryData.CreateCategory(category);
+
+        category = new()
+            {
+                Name = "Mentors",
+                Description = "Tips for mentors"
+            };
+        await categoryData.CreateCategory(category);
+
+        category = new()
+            {
+                Name = "Backoffice",
+                Description = "Tips for backoffice"
+            };
+        await categoryData.CreateCategory(category);
+
+        category = new()
+            {
+                Name = "Other",
+                Description = "Here goes everything else"
+            };
+        await categoryData.CreateCategory(category);
+    }
+
+    private async Task CreateStatuses()
+    {
+        var statuses = await statusData.GetStatuses();
+
+        if (statuses?.Count > 0)
+        {
+            return;
+        }
+
+        Status stat = new()
+            {
+                Name = "Completed",
+                Description = "The suggestion was accepted."
+            };
+            await statusData.CreateStatus(stat);
+
+            stat = new()
+            {
+                Name = "Watching",
+                Description = "The suggestion is interesting...."
+            };
+            await statusData.CreateStatus(stat);
+
+            stat = new()
+            {
+                Name = "Upcoming",
+                Description = "The suggestion was accepted and you will see the change soon."
+            };
+            await statusData.CreateStatus(stat);
+
+            stat = new()
+            {
+                Name = "Dismissed",
+                Description = "Ain`t gonna happen."
+            };
+            await statusData.CreateStatus(stat);
+    }
+}
