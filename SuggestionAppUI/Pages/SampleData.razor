@@ -1,6 +1,8 @@
 ﻿@page "/SampleData"
 @inject ICategoryData categoryData
 @inject IStatusData statusData
+@inject IUserData userData
+@inject ISuggestionData suggestionData
 
 <h3>SampleData</h3>
 
@@ -20,9 +22,62 @@ else
     <button class="btn btn-primary" @onclick="CreateStatuses">Create Statuses</button>
 }
 
+<button class="btn btn-danger" @onclick="GenerateSampleData">Generate Sample Data</button>
+
 @code {
     private bool areCategoriesCreated = false;
     private bool areStatusesCreated = false;
+
+    private async Task GenerateSampleData()
+    {
+        User user = new()
+            {
+                FirstName = "Luky",
+                LastName = "Vyky",
+                EmailAddress = "burger@epic.com",
+                DisplayName = "Proge",
+                ObjectIdentifier = "abc-123"
+            };
+        await userData.CreateUser(user);
+
+        var foundUser = await userData.GetUserFromAuthentication("abc-123");
+
+        var categories = await categoryData.GetCategories();
+        var statuses = await statusData.GetStatuses();
+
+        Suggestion suggestion = new()
+            {
+                Author = new BasicUser(foundUser),
+                Category = categories.FirstOrDefault(),
+                SuggestionContent = "Test suggestion",
+                Description = "Test description of a suggestion"
+            };
+        await suggestionData.CreateSuggestion(suggestion);
+
+        suggestion = new()
+            {
+                Author = new BasicUser(foundUser),
+                Category = categories.Skip(1).FirstOrDefault(),
+                SuggestionContent = "Second test suggestion",
+                Description = "Test description of a suggestion",
+                Status = statuses.FirstOrDefault(),
+                UserVotes = new() { "1", "2", "3", "4"},
+                AdminNotes = "Admin status note"
+            };
+        await suggestionData.CreateSuggestion(suggestion);
+
+        suggestion = new()
+            {
+                Author = new BasicUser(foundUser),
+                Category = categories.Skip(2).FirstOrDefault(),
+                SuggestionContent = "Third test suggestion",
+                Description = "Test description of a suggestion",
+                Status = statuses.Skip(1).FirstOrDefault(),
+                AdminNotes = "Admin status note",
+                UserVotes = new() { "1", "2", "3"}
+            };
+            await suggestionData.CreateSuggestion(suggestion);
+    }
 
     private async Task CreateCategories()
     {

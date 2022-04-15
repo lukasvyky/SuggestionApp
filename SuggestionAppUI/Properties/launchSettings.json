@@ -10,12 +10,13 @@
   "profiles": {
     "SuggestionAppUI": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:7141;http://localhost:5033",
+      "launchUrl": "sampledata",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://localhost:7141;http://localhost:5033",
+      "dotnetRunMessages": true
     },
     "IIS Express": {
       "commandName": "IISExpress",
