@@ -7,7 +7,7 @@
 @inject NavigationManager navManager
 @inject ProtectedSessionStorage sessionStorage
 
-@code{
+@code {
     private List<Suggestion> suggestions;
     private List<Category> categories;
     private List<Status> statuses;
@@ -48,8 +48,49 @@
         isSortedByNew = stringResults.Success ? boolResults.Value : true;
     }
 
+    private async Task SaveFilterState()
+    {
+        await sessionStorage.SetAsync(nameof(selectedCategory), selectedCategory);
+        await sessionStorage.SetAsync(nameof(selectedStatus), selectedStatus);
+        await sessionStorage.SetAsync(nameof(searchText), searchText);
+        await sessionStorage.SetAsync(nameof(isSortedByNew), isSortedByNew);
+    }
+
     private async Task FilterSuggestions()
     {
-        
+        var output = await suggestionData.GetApprovedSuggestions();
+
+        if (selectedCategory != "All")
+        {
+            output = output.Where(s => s.Category?.Name == selectedCategory).ToList();
+        }
+
+        if (selectedStatus != "All")
+        {
+            output = output.Where(s => s.Status?.Name == selectedStatus).ToList();
+        }
+
+        if (!String.IsNullOrWhiteSpace(searchText))
+        {
+            output = output.Where(
+                 s => s.SuggestionContent.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ||
+                 s.Description.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
+                 .ToList();
+        }
+
+        if (isSortedByNew)
+        {
+            output = output.OrderByDescending(s => s.DateCreated).ToList();
+        }
+        else
+        {
+            output = output.OrderByDescending(s => s.UserVotes.Count)
+                           .ThenByDescending(s => s.DateCreated)
+                           .ToList();        
+        }
+
+        suggestions = output;
+
+        await SaveFilterState();
     }
 }
