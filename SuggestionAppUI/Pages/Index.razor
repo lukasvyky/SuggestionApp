@@ -93,4 +93,50 @@
 
         await SaveFilterState();
     }
+
+    private async Task OrderByNew()
+    {
+        isSortedByNew = !isSortedByNew;
+        await FilterSuggestions();
+    }
+
+    private async Task OnSearchInput(string searchInput)
+    {
+        searchText = searchInput;
+        await FilterSuggestions();
+    }
+
+    private async Task OnCategoryClick(string category = "All")
+    {
+        selectedCategory = category;
+        await FilterSuggestions();
+    }
+
+    private async Task OnStatusClick(string status = "All")
+    {
+        selectedStatus = status;
+        await FilterSuggestions();
+    }
+
+    private string GetUpvoteTopText(Suggestion suggestion)
+    {
+        if (suggestion.UserVotes?.Count > 0)
+        {
+            return suggestion.UserVotes.Count.ToString("00");
+        }
+
+        return "Click To";
+    }
+
+    private string GetUpvoteBottomText(Suggestion suggestion)
+    {
+        bool isPlural = suggestion.UserVotes?.Count > 1;
+
+        return $"Upvote{(isPlural ? "s" : string.Empty)}";
+    }
+
+    private void OpenDetails(Suggestion suggestion)
+    {
+        navManager.NavigateTo($"details/{suggestion.Id}");
+    }
 }
