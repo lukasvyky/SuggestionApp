@@ -1,0 +1,37 @@
+﻿@page "/Details/{Id}"
+@inject ISuggestionData suggestionData
+@inject NavigationManager navManager
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    private Suggestion suggestion;
+
+    protected async override Task OnInitializedAsync()
+    {
+        suggestion = await suggestionData.GetSuggestion(Id);
+    }
+
+    private void ClosePage()
+    {
+        navManager.NavigateTo("/");
+    }
+
+     private string GetUpvoteTopText()
+    {
+        if (suggestion.UserVotes?.Count > 0)
+        {
+            return suggestion.UserVotes.Count.ToString("00");
+        }
+
+        return "Click To";
+    }
+
+    private string GetUpvoteBottomText()
+    {
+        bool isPlural = suggestion.UserVotes?.Count > 1;
+
+        return $"Upvote{(isPlural ? "s" : string.Empty)}";
+    }
+}
