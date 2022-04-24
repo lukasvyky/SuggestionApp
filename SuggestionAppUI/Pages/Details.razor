@@ -2,6 +2,53 @@
 @inject ISuggestionData suggestionData
 @inject NavigationManager navManager
 
+<h1>Suggestion Details</h1>
+
+<div>
+    <div>
+        @if (suggestion is not null)
+        {
+            <div>
+                <div>
+                    <div>
+                        <div>@GetUpvoteTopText()</div>
+                        <span class ="oi oi-caret-top"></span>
+                        <div>@GetUpvoteBottomText()</div>
+                    </div>
+                    <div>
+                        <div>@suggestion.DateCreated.ToString("MM.dd.yyyy")</div>
+                    </div>
+                </div>
+                <div>
+                    <div>@suggestion.SuggestionContent</div>
+                    <div>@suggestion.Author?.DisplayName</div>
+                    <div>@suggestion.Description</div>
+                    <div>@suggestion.Category?.Name</div>
+                </div>
+                <div>
+                    <button @onclick="ClosePage">Close page</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@if (suggestion?.Status is not null)
+{<div>
+    <div>
+        <div></div>
+        <div>
+            <div>
+                @suggestion.Status.Name
+            </div>
+            <div>
+                @((MarkupString)suggestion.AdminNotes)
+            </div>
+        </div>
+    </div>
+</div>    
+}
+
 @code {
     [Parameter]
     public string Id { get; set; }
