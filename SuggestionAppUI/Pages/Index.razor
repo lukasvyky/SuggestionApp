@@ -7,6 +7,77 @@
 @inject NavigationManager navManager
 @inject ProtectedSessionStorage sessionStorage
 
+<h1>Training Suggestions</h1>
+<div>
+    <button>Suggest</button>
+</div>
+
+<div>
+    <div>@suggestions?.Count Suggestions</div>
+    <div>
+        <button @onclick="(() => OrderByNew())">@(isSortedByNew ? "New" : "Popular")</button>
+    </div>
+    <div>
+        <input type="text" placeholder="Search" aria-label="Search box" @oninput="((txt) => OnSearchInput((string)txt.Value))" />
+    </div>
+</div>
+
+<div>
+    <div>
+        @if (suggestions is not null)
+        {
+            <Virtualize Items="@suggestions" Context="s" OverscanCount="10">
+                <div>
+                    <div>
+                        <div>@GetUpvoteTopText(s)</div>
+                        <span class ="oi oi-caret-top"></span>
+                        <div>@GetUpvoteBottomText(s)</div>
+                    </div>
+                    <div>
+                        <div @onclick="(() => OpenDetails(s))">
+                             @s.SuggestionContent
+                        </div>
+                        <div>
+                            <div @onclick="(() => OpenDetails(s))">
+                                @s.Category?.Name
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            @s.Status?.Name
+                        </div>
+                    </div>
+                </div>
+            </Virtualize>
+        }
+    </div>
+    <div>
+        @if (categories is not null)
+        {
+            <div>
+                <span>Category</span>
+                <div @onclick="(() => OnCategoryClick())">All</div>
+                @foreach (var cat in categories)
+                {
+                    <div @onclick="(() => OnCategoryClick(cat.Name))">@cat.Name</div>
+                }
+            </div>
+        }
+        @if (statuses is not null)
+        {
+            <div>
+                <span>Status</span>
+                <div @onclick="(() => OnStatusClick())">All</div>
+                @foreach (var status in statuses)
+                {
+                    <div @onclick="(() => OnStatusClick(status.Name))">@status.Name</div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
 @code {
     private List<Suggestion> suggestions;
     private List<Category> categories;
