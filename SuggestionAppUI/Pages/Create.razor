@@ -1,4 +1,5 @@
 ﻿@page "/Create"
+@using SuggestionAppUI.Components
 @using SuggestionAppUI.ViewModels
 @inject ICategoryData categoryData
 @inject ISuggestionData suggestionData
@@ -25,6 +26,22 @@
                 <div>Tell me what you wanna learn</div>
                 <InputText id="suggestion-text" @bind-Value="suggestion.SuggestionContent" />
             </div>
+            <div>
+                <label for="category">Category</label>
+                <div>Choose one category</div>
+                <div>
+                    <CustomInputRadioGroup id="category" @bind-Value="suggestion.CategoryId">
+                        @foreach (var category in categories)
+                        {
+                            <div>
+                                <InputRadio Value="@category.Id" id="@category.Id"/>
+                                <label for="@category.Id">@category.Name - @category.Description</label>
+                            </div>
+                        }
+                    </CustomInputRadioGroup>
+                </div>
+            </div>
+
 
             <div>
                 <label for="description">Description</label>
