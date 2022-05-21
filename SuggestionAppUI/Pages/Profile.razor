@@ -1,0 +1,37 @@
+﻿@page "/Profile"
+@inject ISuggestionData suggestionData
+@inject IUserData userData
+@inject NavigationManager navManager
+
+@code {
+    private User loggedInUser;
+
+    private List<Suggestion> submissions;
+    private List<Suggestion> approved;
+    private List<Suggestion> archived;
+    private List<Suggestion> pending;
+    private List<Suggestion> rejected;
+
+    protected async override Task OnInitializedAsync()
+    {
+        // Todo - replace with real logged in user
+        loggedInUser = await userData.GetUserFromAuthentication("abc-123");
+
+        var result = await suggestionData.GetUsersSuggestions(loggedInUser.Id);
+
+        if (loggedInUser is not null && result is not null)
+        {
+            submissions = result.OrderByDescending(s => s.DateCreated).ToList();
+            approved = submissions.Where(s => s.ApprovedForRelease && !s.Archived && !s.Rejected).ToList();
+            archived = submissions.Where(s => s.Archived && !s.Rejected).ToList();
+            pending = submissions.Where(s => !s.ApprovedForRelease && !s.Rejected).ToList();
+            rejected = submissions.Where(s => s.Rejected).ToList();
+        }
+
+    }
+
+    private void ClosePage()
+    {
+        navManager.NavigateTo("/");
+    }
+}
