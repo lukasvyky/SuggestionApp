@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 
 namespace SuggestionAppUI;
 
@@ -8,8 +9,9 @@ public static class RegisterServices
    public static void ConfigureServices(this WebApplicationBuilder @this)
    {
       @this.Services.AddRazorPages();
-      @this.Services.AddServerSideBlazor();
+      @this.Services.AddServerSideBlazor().AddMicrosoftIdentityConsentHandler();
       @this.Services.AddMemoryCache();
+      @this.Services.AddControllersWithViews().AddMicrosoftIdentityUI();
 
       @this.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
          .AddMicrosoftIdentityWebApp(@this.Configuration.GetSection("AzureAdB2C"));
