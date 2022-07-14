@@ -259,6 +259,11 @@
             return suggestion.UserVotes.Count.ToString("00");
         }
 
+        if (suggestion.Author.Id == loggedInUser.Id)
+        {
+            return "Awaiting";
+        }
+
         return "Click To";
     }
 
