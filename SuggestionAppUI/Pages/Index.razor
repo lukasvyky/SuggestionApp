@@ -30,12 +30,12 @@
                 <div>
                     <div>
                         <div>@GetUpvoteTopText(s)</div>
-                        <span class ="oi oi-caret-top"></span>
+                        <span class="oi oi-caret-top"></span>
                         <div>@GetUpvoteBottomText(s)</div>
                     </div>
                     <div>
                         <div @onclick="(() => OpenDetails(s))">
-                             @s.SuggestionContent
+                            @s.SuggestionContent
                         </div>
                         <div>
                             <div @onclick="(() => OpenDetails(s))">
@@ -95,7 +95,66 @@
     {
         categories = await categoryData.GetCategories();
         statuses = await statusData.GetStatuses();
-        loggedInUser = await authProvider.GetUserFromAuth(userData);
+        await LoadAndVerifyUser();
+    }
+
+    private async Task LoadAndVerifyUser()
+    {
+        var authState = await authProvider.GetAuthenticationStateAsync();
+        string objectId = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
+
+        if (!String.IsNullOrWhiteSpace(objectId))
+        {
+            loggedInUser = await userData.GetUserFromAuthentication(objectId) ?? new();
+
+            string firstName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("givenname"))?.Value;
+            string lastName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("surname"))?.Value;
+            string displayName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("name"))?.Value;
+            string email = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("email"))?.Value;
+
+            bool isDirty = false;
+            if (loggedInUser.ObjectIdentifier != objectId)
+            {
+                isDirty = true;
+                loggedInUser.ObjectIdentifier = objectId;
+            }
+
+            if (loggedInUser.FirstName != firstName)
+            {
+                isDirty = true;
+                loggedInUser.FirstName = firstName;
+            }
+
+            if (loggedInUser.LastName != lastName)
+            {
+                isDirty = true;
+                loggedInUser.LastName = lastName;
+            }
+
+            if (loggedInUser.DisplayName != displayName)
+            {
+                isDirty = true;
+                loggedInUser.DisplayName = displayName;
+            }
+
+            if (loggedInUser.EmailAddress != email)
+            {
+                isDirty = true;
+                loggedInUser.EmailAddress = email;
+            }
+
+            if (isDirty)
+            {
+                if (String.IsNullOrWhiteSpace(loggedInUser.Id))
+                {
+                    await userData.CreateUser(loggedInUser);
+                }
+                else
+                {
+                    await userData.UpdateUser(loggedInUser);
+                }
+            }
+        }
     }
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
@@ -161,7 +220,7 @@
         {
             output = output.OrderByDescending(s => s.UserVotes.Count)
                            .ThenByDescending(s => s.DateCreated)
-                           .ToList();        
+                           .ToList();
         }
 
         suggestions = output;
