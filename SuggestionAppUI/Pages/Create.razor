@@ -65,9 +65,7 @@
     protected async override Task OnInitializedAsync()
     {
         categories = await categoryData.GetCategories();
-        var authState = await authProvider.GetAuthenticationStateAsync();
-        string objectId = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
-        loggedInUser = await userData.GetUserFromAuthentication("objectId");
+        loggedInUser = await authProvider.GetUserFromAuth(userData);
     }
 
     private void ClosePage()
