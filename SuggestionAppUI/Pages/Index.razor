@@ -1,5 +1,5 @@
 ﻿@page "/"
-
+@inject AuthenticationStateProvider authProvider
 @inject ICategoryData categoryData
 @inject IStatusData statusData
 @inject ISuggestionData suggestionData
@@ -81,6 +81,7 @@
 </div>
 
 @code {
+    private User loggedInUser;
     private List<Suggestion> suggestions;
     private List<Category> categories;
     private List<Status> statuses;
@@ -94,6 +95,7 @@
     {
         categories = await categoryData.GetCategories();
         statuses = await statusData.GetStatuses();
+        loggedInUser = await authProvider.GetUserFromAuth(userData);
     }
 
     protected async override Task OnAfterRenderAsync(bool firstRender)

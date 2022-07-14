@@ -1,5 +1,5 @@
-using SuggestionAppUI;
 using Microsoft.AspNetCore.Rewrite;
+using SuggestionAppUI;
 
 var builder = WebApplication.CreateBuilder(args);
 
