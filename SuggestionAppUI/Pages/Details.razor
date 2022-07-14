@@ -1,6 +1,8 @@
 ﻿@page "/Details/{Id}"
 @inject ISuggestionData suggestionData
 @inject NavigationManager navManager
+@inject AuthenticationStateProvider authProvider
+@inject IUserData userData
 
 <h1>Suggestion Details</h1>
 
@@ -10,9 +12,9 @@
         {
             <div>
                 <div>
-                    <div>
+                    <div @onclick="VoteUp">
                         <div>@GetUpvoteTopText()</div>
-                        <span class ="oi oi-caret-top"></span>
+                        <span class="oi oi-caret-top"></span>
                         <div>@GetUpvoteBottomText()</div>
                     </div>
                     <div>
@@ -34,19 +36,20 @@
 </div>
 
 @if (suggestion?.Status is not null)
-{<div>
+{
     <div>
-        <div></div>
         <div>
+            <div></div>
             <div>
-                @suggestion.Status.Name
-            </div>
-            <div>
-                @((MarkupString)suggestion.AdminNotes)
+                <div>
+                    @suggestion.Status.Name
+                </div>
+                <div>
+                    @((MarkupString)suggestion.AdminNotes)
+                </div>
             </div>
         </div>
     </div>
-</div>    
 }
 
 @code {
@@ -54,10 +57,12 @@
     public string Id { get; set; }
 
     private Suggestion suggestion;
+    private User loggedInUser;
 
     protected async override Task OnInitializedAsync()
     {
         suggestion = await suggestionData.GetSuggestion(Id);
+        loggedInUser = await authProvider.GetUserFromAuth(userData);
     }
 
     private void ClosePage()
@@ -65,11 +70,16 @@
         navManager.NavigateTo("/");
     }
 
-     private string GetUpvoteTopText()
+    private string GetUpvoteTopText()
     {
         if (suggestion.UserVotes?.Count > 0)
         {
             return suggestion.UserVotes.Count.ToString("00");
+        }
+
+        if (suggestion.Author.Id == loggedInUser?.Id)
+        {
+            return "Awaiting";
         }
 
         return "Click To";
@@ -80,5 +90,27 @@
         bool isPlural = suggestion.UserVotes?.Count > 1;
 
         return $"Upvote{(isPlural ? "s" : string.Empty)}";
+    }
+
+    private async Task VoteUp()
+    {
+        if (loggedInUser is null)
+        {
+            navManager.NavigateTo("/MicrosoftIdentity/Account/SignIn", true);
+        }
+        else
+        {
+            if (suggestion.Author.Id == loggedInUser.Id)
+            {
+                return;
+            }
+
+            if (!suggestion.UserVotes.Add(loggedInUser.Id))
+            {
+                suggestion.UserVotes.Remove(loggedInUser.Id);
+            }
+
+            await suggestionData.UpvoteSuggestion(suggestion.Id, loggedInUser.Id);
+        }
     }
 }

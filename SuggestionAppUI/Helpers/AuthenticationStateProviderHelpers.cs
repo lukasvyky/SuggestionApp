@@ -8,6 +8,6 @@ public static class AuthenticationStateProviderHelpers
    {
       var authState = await @provider.GetAuthenticationStateAsync();
       string objectId = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
-      return await userData.GetUserFromAuthentication("objectId");
+      return await userData.GetUserFromAuthentication(objectId);
    }
 }

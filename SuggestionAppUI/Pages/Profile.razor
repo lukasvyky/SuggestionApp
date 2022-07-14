@@ -10,7 +10,7 @@
 
 <div>
     <div>
-        <button @onclick="ClosePage"></button>
+        <button @onclick="ClosePage">Return</button>
     </div>
 </div>
 
@@ -193,7 +193,6 @@
             pending = submissions.Where(s => !s.ApprovedForRelease && !s.Rejected).ToList();
             rejected = submissions.Where(s => s.Rejected).ToList();
         }
-
     }
 
     private void ClosePage()
