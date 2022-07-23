@@ -7,44 +7,44 @@
 @inject NavigationManager navManager
 @inject ProtectedSessionStorage sessionStorage
 
-<h1>Training Suggestions</h1>
-<div>
-    <button>Suggest</button>
+<h1 class="page-heading text-uppercase mb-4">Training Suggestions</h1>
+<div class="suggestion-container">
+    <button @onclick="LoadCreatePage" class="suggest-btn btn btn-outline-light btn-lg text-uppercase">Suggest</button>
 </div>
 
-<div>
-    <div>@suggestions?.Count Suggestions</div>
-    <div>
-        <button @onclick="(() => OrderByNew())">@(isSortedByNew ? "New" : "Popular")</button>
+<div class="row">
+    <div class="suggestions-count cal-md-4 text-light mt-2">@suggestions?.Count Suggestions</div>
+    <div class="col-md-4 col-xl-5">
+        <button class="btn btn-order" @onclick="(() => OrderByNew())">@(isSortedByNew ? "New" : "Popular")</button>
     </div>
-    <div>
-        <input type="text" placeholder="Search" aria-label="Search box" @oninput="((txt) => OnSearchInput((string)txt.Value))" />
+    <div class="col-md-4 col-xl-3 search-box">
+        <input type="text" placeholder="Search" aria-label="Search box" class="form-control rounded-control" @oninput="((txt) => OnSearchInput((string)txt.Value))" />
     </div>
 </div>
 
-<div>
-    <div>
+<div class="row">
+    <div class="col-md-8 col-xl-9">
         @if (suggestions is not null)
         {
             <Virtualize Items="@suggestions" Context="s" OverscanCount="10">
-                <div>
-                    <div @onclick="(() => VoteUp(s))">
-                        <div>@GetUpvoteTopText(s)</div>
-                        <span class="oi oi-caret-top"></span>
-                        <div>@GetUpvoteBottomText(s)</div>
+                <div class="suggestion-entry">
+                    <div class="@GetVoteClass(s)" @onclick="(() => VoteUp(s))">
+                        <div class="text-uppercase">@GetUpvoteTopText(s)</div>
+                        <span class="oi oi-caret-top" style="font-size:3rem;"></span>
+                        <div class="text-uppercase">@GetUpvoteBottomText(s)</div>
                     </div>
-                    <div>
-                        <div @onclick="(() => OpenDetails(s))">
+                    <div class="suggestion-entry-text">
+                        <div class="suggestion-entry-text-title" @onclick="(() => OpenDetails(s))">
                             @s.SuggestionContent
                         </div>
                         <div>
-                            <div @onclick="(() => OpenDetails(s))">
+                            <div class="suggestion-entry-text-category" @onclick="(() => OpenDetails(s))">
                                 @s.Category?.Name
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div>
+                    <div class="suggestion-entry-status @GetSuggestionStatusClass(s)">
+                        <div class="suggestion-entry-status-text">
                             @s.Status?.Name
                         </div>
                     </div>
@@ -53,27 +53,27 @@
             </Virtualize>
         }
     </div>
-    <div>
+    <div class="col-md-4 col-xl-3">
         @if (categories is not null)
         {
-            <div>
-                <span>Category</span>
-                <div @onclick="(() => OnCategoryClick())">All</div>
+            <div class="categories">
+                <span class="text-uppercase fw-bold">Category</span>
+                <div class="@GetSelectedCategory()" @onclick="(() => OnCategoryClick())">All</div>
                 @foreach (var cat in categories)
                 {
-                    <div @onclick="(() => OnCategoryClick(cat.Name))">@cat.Name</div>
+                    <div class="@GetSelectedCategory(cat.Name)" @onclick="(() => OnCategoryClick(cat.Name))">@cat.Name</div>
                 }
             </div>
         }
         <hr>
         @if (statuses is not null)
         {
-            <div>
-                <span>Status</span>
-                <div @onclick="(() => OnStatusClick())">All</div>
+            <div class="statuses">
+                <span class="text-uppercase fw-bold">Status</span>
+                <div class="@GetSelectedStatus()" @onclick="(() => OnStatusClick())">All</div>
                 @foreach (var status in statuses)
                 {
-                    <div @onclick="(() => OnStatusClick(status.Name))">@status.Name</div>
+                    <div class="@GetSelectedStatus(status.Name)"@onclick="(() => OnStatusClick(status.Name))">@status.Name</div>
                 }
             </div>
         }
@@ -91,6 +91,14 @@
     private string searchText = string.Empty;
     private bool isSortedByNew = true;
 
+    private void LoadCreatePage()
+    {
+        if (loggedInUser is not null)
+        {
+            navManager.NavigateTo("/Create");
+        }
+        navManager.NavigateTo("/MicrosoftIdentity/Account/SignIn", true);
+    }
     protected async override Task OnInitializedAsync()
     {
         categories = await categoryData.GetCategories();
@@ -306,5 +314,58 @@
     private void OpenDetails(Suggestion suggestion)
     {
         navManager.NavigateTo($"details/{suggestion.Id}");
+    }
+
+    private string GetVoteClass(Suggestion suggestion)
+    {
+        if (suggestion.UserVotes is null || suggestion.UserVotes.Count == 0)
+        {
+            return "suggestion-entry-no-votes";
+        }
+        else if (suggestion.UserVotes.Contains(loggedInUser?.Id))
+        {
+            return "suggestion-entry-voted";
+        }
+        else
+        {
+            return "suggestion-entry-not-voted";
+        }
+    }
+
+    private string GetSuggestionStatusClass(Suggestion suggestion)
+    {
+        if (suggestion is null || suggestion.Status is null)
+        {
+            return "suggestion-entry-status-none";
+        }
+
+        string output = suggestion.Status.Name switch
+        {
+            "Completed" => "suggestion-entry-status-completed",
+            "Watching" => "suggestion-entry-status-watching",
+            "Upcoming" => "suggestion-entry-status-upcoming",
+            "Dismissed" => "suggestion-entry-status-dismissed",
+            _ => "suggestion-entry-status-none",
+        };
+
+        return output;
+    }
+
+    private string GetSelectedCategory(string category = "All")
+    {
+        if (category == selectedCategory)
+        {
+            return "selected-category";
+        }
+        return string.Empty;
+    }
+
+    private string GetSelectedStatus(string status = "All")
+    {
+        if (status == selectedStatus)
+        {
+            return "selected-status";
+        }
+        return string.Empty;
     }
 }

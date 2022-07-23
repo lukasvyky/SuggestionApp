@@ -21,7 +21,6 @@ public static class RegisterServices
          options.AddPolicy("Admin", policy =>
          {
             policy.RequireClaim("jobTitle", "Admin");
-
          });
       });
 
