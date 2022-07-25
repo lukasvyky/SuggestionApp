@@ -212,3 +212,27 @@ a, .btn-link {
     background-color: #FFFFFF;
     color: #39BAD8;
 }
+
+.suggestion-entry-text {
+    display:flex;
+    flex-direction: column;
+    padding: 10px;
+    padding-left: 20px;
+    background-color: #FFFFFF;
+}
+
+.suggestion-entry-text-title{
+    flex-grow: 1;
+    padding-top: 10px;
+}
+
+.suggestion-entry-text-category {
+    text-transform: uppercase;
+    color: darkgray;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+}
