@@ -169,3 +169,46 @@ a, .btn-link {
 .selected-status {
     font-weight: 700;
 }
+
+.suggestion-entry{
+    display: grid;
+    grid-template-columns: 140px 1fr 45px;
+    border-radius: 20px;
+    margin: 20px 0;
+    box-shadow: rgba(0,0,0,0.35) 0 5px 15px;
+}
+
+.suggestion-entry-no-votes,
+.suggestion-entry-voted,
+.suggestion-entry-not-voted {
+    text-align: center;
+    border-right: 3px #39BAD8 solid;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    background-color: #39BAD8;
+    color: #FFFFFF;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    min-height: 140px;
+    cursor: pointer;
+}
+
+.suggestion-entry-no-votes{
+    background-color: #DDDDDD;
+    color: #FFFFFF;
+    border-color: #DDDDDD;
+}
+
+.suggestion-entry-voted {
+    background-color: #39BAD8;
+    color: #FFFFFF;
+}
+
+.suggestion-entry-not-voted {
+    background-color: #FFFFFF;
+    color: #39BAD8;
+}
