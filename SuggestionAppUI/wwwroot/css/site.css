@@ -87,7 +87,7 @@ a, .btn-link {
     text-align: center;
 }
 
-.suggestion-container{
+.suggestion-container {
     display: flex;
     justify-content: center;
     margin-bottom: 3rem;
@@ -102,8 +102,32 @@ a, .btn-link {
     font-weight: 900;
 }
 
-.btn-outline-light:hover{
+.btn-outline-light:hover {
     color: #2ba921;
     background-color: #FFFFFF;
     border-color: #FFFFFF;
+}
+
+.suggestions-count {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.btn:focus, .form-control:focus {
+    box-shadow: none;
+}
+
+.btn-order {
+    background-color: #FFFFFF;
+    border: 0px solid #DDDDDD;
+    border-radius: 10px;
+}
+
+.search-box{
+    --bs-gutter-x: 3.5rem;
+}
+
+.rounded-control{
+    border-radius: 10px;
 }
