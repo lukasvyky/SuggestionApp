@@ -1,15 +1,17 @@
 ﻿@inject NavigationManager navManager
 
-<div>
-    <div>
-        <div>
-            <div>Authorization required</div>
-            <p>
-                Please log in in order to get to this page
-            </p>
-        </div>
-        <div>
-            <button @onclick="ClosePage">Close</button>
+<div class="row justify-context-center">
+    <div class="col-xl-8 col-lg-10 form-layout">
+        <div class="row">
+            <div class="col-11">
+                <div class="fw-bold mb-2 fs-5">Authorization required</div>
+                <p>
+                    Please log in in order to get to this page.
+                </p>
+            </div>
+            <div class="col-1 close-button-section">
+                <button class="btn btn-close" @onclick="ClosePage"></button>
+            </div>
         </div>
     </div>
 </div>
