@@ -6,167 +6,167 @@
 @inject NavigationManager navManager
 
 
-<h1>My Profile</h1>
+<h1 class="page-heading text-uppercase mb-4">My Profile</h1>
 
-<div>
-    <div>
-        <button @onclick="ClosePage">Return</button>
+<div class="row">
+    <div class="col-12 close-button-section">
+        <button class="btn btn-close" @onclick="ClosePage"></button>
     </div>
 </div>
 
-<div>
-    <h2>My Account</h2>
-    <p>
+<div class="form-layout mb-3">
+    <h2 class="my-submission-heading">My Account</h2>
+    <p class="my-submission-text">
         <a href="MicrosoftIdentity/Account/EditProfile">Edit my profile</a>
     </p>
 </div>
 
 @if (approved?.Count > 0)
 {
-   <div>
-    <h2>Approved Suggestions</h2>
-    <p>These are your currently active suggestions</p>
+    <div class="form-layout mb-3">
+        <h2 class="my-submission-heading">Approved Suggestions</h2>
+        <p class="my-submission-text">These are your currently active suggestions</p>
 
-    @foreach (var suggestion in approved)
-    {
-        <hr />
-        <div>
-            @suggestion.SuggestionContent
-        </div>
-        <p>
-            @suggestion.DateCreated.ToString("MM.dd.yyyy")
-        </p>
-        <p>
-            Total votes: @suggestion.UserVotes.Count
-        </p>
-        <p>
-            @suggestion.Category.Name
-        </p>
-        <p>
-            @suggestion.Description
-        </p>
-        @if (suggestion.Status is not null)
+        @foreach (var suggestion in approved)
         {
-            <div>
-                @suggestion.Status.Name
+            <hr class="my-submission-separator" />
+            <div class="fw-bold suggestion-detail-suggestion">
+                @suggestion.SuggestionContent
             </div>
-            <p>
-                @((MarkupString)suggestion.AdminNotes)
+            <p class="my-suggestion-text">
+                @suggestion.DateCreated.ToString("MM.dd.yyyy")
             </p>
+            <p class="my-suggestion-text">
+                Total votes: @suggestion.UserVotes.Count
+            </p>
+            <p class="my-suggestion-text">
+                @suggestion.Category.Name
+            </p>
+            <p class="my-suggestion-text">
+                @suggestion.Description
+            </p>
+            @if (suggestion.Status is not null)
+            {
+                <div class="fw-bold suggestion-detail-suggestion">
+                    @suggestion.Status.Name
+                </div>
+                <p>
+                    @((MarkupString)suggestion.AdminNotes)
+                </p>
+            }
         }
-    }
-</div> 
+    </div>
 }
 
 @if (archived?.Count > 0)
 {
-   <div>
-    <h2>Archived Suggestions</h2>
-    <p>There are your currently archived suggestions</p>
+    <div class="form-layout mb-3">
+        <h2 class="my-submission-heading">Archived Suggestions</h2>
+        <p class="my-submission-text">There are your currently archived suggestions</p>
 
-    @foreach (var suggestion in archived)
-    {
-        <hr />
-        <div>
-            @suggestion.SuggestionContent
-        </div>
-        <p>
-            @suggestion.DateCreated.ToString("MM.dd.yyyy")
-        </p>
-        <p>
-            Total votes: @suggestion.UserVotes.Count
-        </p>
-        <p>
-            @suggestion.Category.Name
-        </p>
-        <p>
-            @suggestion.Description
-        </p>
-        @if (suggestion.Status is not null)
+        @foreach (var suggestion in archived)
         {
-            <div>
-                @suggestion.Status.Name
+            <hr class="my-submission-separator" />
+            <div class="fw-bold suggestion-detail-suggestion">
+                @suggestion.SuggestionContent
             </div>
-            <p>
-                @((MarkupString)suggestion.AdminNotes)
+            <p class="my-suggestion-text">
+                @suggestion.DateCreated.ToString("MM.dd.yyyy")
             </p>
+            <p class="my-suggestion-text">
+                Total votes: @suggestion.UserVotes.Count
+            </p>
+            <p class="my-suggestion-text">
+                @suggestion.Category.Name
+            </p>
+            <p class="my-suggestion-text">
+                @suggestion.Description
+            </p>
+            @if (suggestion.Status is not null)
+            {
+                <div class="fw-bold suggestion-detail-suggestion">
+                    @suggestion.Status.Name
+                </div>
+                <p>
+                    @((MarkupString)suggestion.AdminNotes)
+                </p>
+            }
         }
-    }
-</div> 
+    </div>
 }
 
 @if (pending?.Count > 0)
 {
-   <div>
-    <h2>Pending Suggestions</h2>
-    <p>There are your currently pending suggestions</p>
+    <div class="form-layout mb-3">
+        <h2 class="my-submission-heading">Pending Suggestions</h2>
+        <p class="my-submission-text">There are your currently pending suggestions</p>
 
-    @foreach (var suggestion in pending)
-    {
-        <hr />
-        <div>
-            @suggestion.SuggestionContent
-        </div>
-        <p>
-            @suggestion.DateCreated.ToString("MM.dd.yyyy")
-        </p>
-        <p>
-            Total votes: @suggestion.UserVotes.Count
-        </p>
-        <p>
-            @suggestion.Category.Name
-        </p>
-        <p>
-            @suggestion.Description
-        </p>
-        @if (suggestion.Status is not null)
+        @foreach (var suggestion in pending)
         {
-            <div>
-                @suggestion.Status.Name
+            <hr class="my-submission-separator" />
+            <div class="fw-bold suggestion-detail-suggestion">
+                @suggestion.SuggestionContent
             </div>
-            <p>
-                @((MarkupString)suggestion.AdminNotes)
+            <p class="my-suggestion-text">
+                @suggestion.DateCreated.ToString("MM.dd.yyyy")
             </p>
+            <p class="my-suggestion-text">
+                Total votes: @suggestion.UserVotes.Count
+            </p>
+            <p class="my-suggestion-text">
+                @suggestion.Category.Name
+            </p>
+            <p class="my-suggestion-text">
+                @suggestion.Description
+            </p>
+            @if (suggestion.Status is not null)
+            {
+                <div class="fw-bold suggestion-detail-suggestion">
+                    @suggestion.Status.Name
+                </div>
+                <p>
+                    @((MarkupString)suggestion.AdminNotes)
+                </p>
+            }
         }
-    }
-</div> 
+    </div>
 }
 
 @if (rejected?.Count > 0)
 {
-   <div>
-    <h2>Rejected Suggestions</h2>
-    <p>There are your currently rejected suggestions</p>
+    <div class="form-layout mb-3">
+        <h2 class="my-submission-heading">Rejected Suggestions</h2>
+        <p class="my-submission-text">There are your currently rejected suggestions</p>
 
-    @foreach (var suggestion in rejected)
-    {
-        <hr />
-        <div>
-            @suggestion.SuggestionContent
-        </div>
-        <p>
-            @suggestion.DateCreated.ToString("MM.dd.yyyy")
-        </p>
-        <p>
-            Total votes: @suggestion.UserVotes.Count
-        </p>
-        <p>
-            @suggestion.Category.Name
-        </p>
-        <p>
-            @suggestion.Description
-        </p>
-        @if (suggestion.Status is not null)
+        @foreach (var suggestion in rejected)
         {
-            <div>
-                @suggestion.Status.Name
+            <hr class="my-submission-separator" />
+            <div class="fw-bold suggestion-detail-suggestion">
+                @suggestion.SuggestionContent
             </div>
-            <p>
-                @((MarkupString)suggestion.AdminNotes)
+            <p class="my-suggestion-text">
+                @suggestion.DateCreated.ToString("MM.dd.yyyy")
             </p>
+            <p class="my-suggestion-text">
+                Total votes: @suggestion.UserVotes.Count
+            </p>
+            <p class="my-suggestion-text">
+                @suggestion.Category.Name
+            </p>
+            <p class="my-suggestion-text">
+                @suggestion.Description
+            </p>
+            @if (suggestion.Status is not null)
+            {
+                <div class="fw-bold suggestion-detail-suggestion">
+                    @suggestion.Status.Name
+                </div>
+                <p>
+                    @((MarkupString)suggestion.AdminNotes)
+                </p>
+            }
         }
-    }
-</div> 
+    </div>
 }
 
 
