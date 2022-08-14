@@ -18,26 +18,26 @@
 
         @if (categories is not null)
         {
-        <EditForm Model="suggestion" OnValidSubmit="CreateSuggestion">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
-            <div class="input-section">
-                <label class="form-label fw-bold text-uppercase" for="suggestion-text">Suggestion</label>
-                <div class="input-description">Tell me what you wanna learn</div>
-                <InputText class="form-control" id="suggestion-text" @bind-Value="suggestion.SuggestionContent" />
-            </div>
-            <div class="input-section">
-                <label class="form-label fw-bold text-uppercase" for="category">Category</label>
-                <div class="input-description">Choose one category</div>
-                <div class="col-lg-8">
-                    <CustomInputRadioGroup id="category" @bind-Value="suggestion.CategoryId">
-                        @foreach (var category in categories)
-                        {
+            <EditForm Model="suggestion" OnValidSubmit="CreateSuggestion">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="input-section">
+                    <label class="form-label fw-bold text-uppercase" for="suggestion-text">Suggestion</label>
+                    <div class="input-description">Tell me what you wanna learn</div>
+                    <InputText class="form-control" id="suggestion-text" @bind-Value="suggestion.SuggestionContent" />
+                </div>
+                <div class="input-section">
+                    <label class="form-label fw-bold text-uppercase" for="category">Category</label>
+                    <div class="input-description">Choose one category</div>
+                    <div class="col-lg-8">
+                        <CustomInputRadioGroup id="category" @bind-Value="suggestion.CategoryId">
+                            @foreach (var category in categories)
+                            {
                             <div class="radio-item-group">
-                                <InputRadio Value="@category.Id" id="@category.Id"/>
+                                <InputRadio Value="@category.Id" id="@category.Id" />
                                 <label for="@category.Id">@category.Name - @category.Description</label>
                             </div>
-                        }
+                            }
                     </CustomInputRadioGroup>
                 </div>
             </div>
@@ -55,32 +55,3 @@
     </div>
 </div>
 
-@code {
-    private CreateSuggestionViewModel suggestion = new();
-    private List<Category> categories;
-    private User loggedInUser;
-
-    protected async override Task OnInitializedAsync()
-    {
-        categories = await categoryData.GetCategories();
-        loggedInUser = await authProvider.GetUserFromAuth(userData);
-    }
-
-    private void ClosePage()
-    {
-        navManager.NavigateTo("/");
-    }
-
-    private async Task CreateSuggestion()
-    {
-        Suggestion s = new();
-        s.SuggestionContent = suggestion.SuggestionContent;
-        s.Description = suggestion.Description;
-        s.Author = new BasicUser(loggedInUser);
-        s.Category = categories.FirstOrDefault(c => c.Id == suggestion.CategoryId);
-
-        await suggestionData.CreateSuggestion(s);
-        suggestion = new();
-        ClosePage();
-    }
-}

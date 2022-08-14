@@ -1,10 +1,9 @@
 ﻿@page "/Profile"
 @attribute [Authorize]
 @inject AuthenticationStateProvider authProvider
+@inject NavigationManager navManager
 @inject ISuggestionData suggestionData
 @inject IUserData userData
-@inject NavigationManager navManager
-
 
 <h1 class="page-heading text-uppercase mb-4">My Profile</h1>
 
@@ -167,36 +166,4 @@
             }
         }
     </div>
-}
-
-
-@code {
-    private User loggedInUser;
-
-    private List<Suggestion> submissions;
-    private List<Suggestion> approved;
-    private List<Suggestion> archived;
-    private List<Suggestion> pending;
-    private List<Suggestion> rejected;
-
-    protected async override Task OnInitializedAsync()
-    {
-        loggedInUser = await authProvider.GetUserFromAuth(userData);
-
-        var result = await suggestionData.GetUsersSuggestions(loggedInUser.Id);
-
-        if (loggedInUser is not null && result is not null)
-        {
-            submissions = result.OrderByDescending(s => s.DateCreated).ToList();
-            approved = submissions.Where(s => s.ApprovedForRelease && !s.Archived && !s.Rejected).ToList();
-            archived = submissions.Where(s => s.Archived && !s.Rejected).ToList();
-            pending = submissions.Where(s => !s.ApprovedForRelease && !s.Rejected).ToList();
-            rejected = submissions.Where(s => s.Rejected).ToList();
-        }
-    }
-
-    private void ClosePage()
-    {
-        navManager.NavigateTo("/");
-    }
 }
