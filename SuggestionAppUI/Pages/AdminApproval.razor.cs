@@ -3,7 +3,6 @@ namespace SuggestionAppUI.Pages;
 public partial class AdminApproval
 {
    private List<Suggestion> submissions;
-   private Suggestion editingModel;
    private string currentEditingTitle = string.Empty;
    private string editedTitle = string.Empty;
    private string currentEditingDescription = string.Empty;
@@ -29,7 +28,6 @@ public partial class AdminApproval
 
    private void EditTitle(Suggestion model)
    {
-      editingModel = model;
       editedTitle = model.SuggestionContent;
       currentEditingTitle = model.Id;
       currentEditingDescription = string.Empty;
@@ -44,7 +42,6 @@ public partial class AdminApproval
 
    private void EditDescription(Suggestion model)
    {
-      editingModel = model;
       editedDescription = model.Description;
       currentEditingTitle = string.Empty;
       currentEditingDescription = model.Id;
