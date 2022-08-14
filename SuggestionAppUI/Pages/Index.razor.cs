@@ -48,7 +48,7 @@ public partial class Index
          loggedInUser = await userData.GetUserFromAuthentication(objectId) ?? new();
          string firstName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("givenname"))?.Value;
          string lastName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("surname"))?.Value;
-         string displayName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("name"))?.Value;
+         string displayName = authState.User.Claims.FirstOrDefault(c => c.Type == "name")?.Value;
          string email = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("email"))?.Value;
          bool isDirty = false;
          if (loggedInUser.ObjectIdentifier != objectId)
