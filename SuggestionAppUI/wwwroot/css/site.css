@@ -518,11 +518,11 @@ a, .btn-link {
     border-color: #FFFFFF;
 }
 
-.btn-approve:hover {
+    .btn-approve:hover {
         color: #B5D43A;
         border-color: #B5D43A;
         background-color: #FFFFFF;
-}
+    }
 
 .btn-reject {
     color: #FFFFFF;
@@ -530,11 +530,11 @@ a, .btn-link {
     border-color: #FFFFFF;
 }
 
-.btn-reject:hover {
+    .btn-reject:hover {
         color: #E9354C;
         border-color: #E9354C;
         background-color: #FFFFFF;
-}
+    }
 
 .approval-edit-form {
     display: flex;
@@ -549,26 +549,26 @@ a, .btn-link {
     color: #B5D43A;
 }
 
-.submission-edit-approve:hover {
+    .submission-edit-approve:hover {
         font-weight: 700;
-}
+    }
 
 .submission-edit-reject {
     color: #E9354C;
 }
 
-.submission-edit-reject:hover {
+    .submission-edit-reject:hover {
         font-weight: 700;
-}
+    }
 
 .submission-edit-icon {
     padding-left: 1rem;
     padding-right: 1rem;
 }
 
-.submission-edit-icon:hover {
+    .submission-edit-icon:hover {
         color: #39BAD8;
-}
+    }
 
 .my-submission-heading {
     color: #000000;
@@ -584,4 +584,30 @@ a, .btn-link {
     color: #A9A9A9;
     height: 2px;
     opacity: 1;
+}
+
+.suggestion-entry-bottom {
+    display: flex;
+    justify-content:space-between;
+}
+
+.btn-archive {
+    border: 0;
+    background-color: #FFFFFF;
+    padding: 0 10px;
+    /*flex: unset;*/
+}
+
+.btn-archive-confirm,
+.btn-archive-reject {
+    text-transform: uppercase;
+    color: darkgray;
+    font-family: 'Monserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+   /* flex: 1;*/
+}
+
+.btn-archive-confirm {
+    color: #E9354C;
 }
