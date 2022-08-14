@@ -39,15 +39,15 @@
             </div>
         }
 
-         @if (statuses is not null && showStatuses)
+        @if (statuses is not null && showStatuses)
         {
             <div class="statuses">
                 <span class="text-uppercase fw-bold">Status</span>
                 <div class="@GetSelectedStatus()" @onclick="(() => OnStatusClick())">All</div>
                 @foreach (var s in statuses)
                 {
-                    <div class="@GetSelectedStatus(s.Name)" 
-                        @onclick="(() => OnStatusClick(s.Name))">
+                    <div class="@GetSelectedStatus(s.Name)"
+                 @onclick="(() => OnStatusClick(s.Name))">
                         @s.Name
                     </div>
                 }
@@ -55,9 +55,9 @@
         }
         else
         {
-           <div class="statuses" @onclick="(() => showStatuses = true)">
+            <div class="statuses" @onclick="(() => showStatuses = true)">
                 <span class="selected-status">@selectedStatus</span>
-            </div> 
+            </div>
         }
     </div>
 </div>
